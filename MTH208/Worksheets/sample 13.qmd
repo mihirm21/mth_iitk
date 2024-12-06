@@ -1,0 +1,143 @@
+# Welcome to this Sample Document
+
+### Solving quadratic equations
+
+Consider equations of the form $ax^2 + bx + c = 0$. This is a quadratic equation; changing the values of $a$, $b$, and $c$, changes the shape of the quadratic. There are two solutions to a quadratic equation:
+
+$$
+x = \dfrac{-b \pm \sqrt{b^2 - 4ac}}{2a}.
+$$
+
+Let's draw a quadratic curve for different values of $a, b$, and $c$.
+
+```{r}
+a <- 10
+b <- 3
+c <- -5
+x <- seq(-2, 2, length = 1e3)
+fx <- a*x^2 + b*x + c
+plot(x, fx, type = 'l', xlab = "x", ylab = "Quadratic function")
+# adding line for solution
+abline(h = 0, lty = 2, col = "red")
+```
+
+In the above, we can also change the way the plot appears. I will rerun the above code, without displaying the code, and only producing the plot of figure height "4" units and figure width "4" units
+
+```{r}
+#| echo: false
+#| fig-cap: "A quadratic function"
+#| fig-width: 4
+#| fig-height: 4
+a <- 10
+b <- 3
+c <- -5
+x <- seq(-2, 2, length = 1e3)
+fx <- a*x^2 + b*x + c
+plot(x, fx, type = 'l', xlab = "x", ylab = "Quadratic function")
+# adding line for solution
+abline(h = 0, lty = 2, col = "red")
+```
+
+### Studying the Cricket dataset
+
+We will study the cricket dataset more closely now. The `battingbowling.csv` file in your repository contains information regarding various potential all-rounders in men's ODI cricket. The players' batting average, bowling average, and team is present in the dataset.
+
+We will make a few visualizations. But first, we will need a few libraries.
+
+```{r}
+library(ggplot2)
+library(tibble)
+```
+
+Let's load the data the data and convert it to a tibble.
+
+```{r}
+cric <- read.csv("battingbowling.csv")
+cric <- as_tibble(cric)
+cric
+```
+
+Let's create a side-by-side boxplot of the Batting averages:
+
+```{r}
+#| fig-width: 5
+#| fig-height: 3
+p <- ggplot(cric, aes(x = Team,y = Batting))
+p + geom_boxplot(fill = "tomato")+
+  labs(title = "Batting Average", 
+       subtitle = "Side-by-side boxplot for Teams", 
+       y = "Batting Average")
+```
+
+We can do the same thing for the Bowling average as well (notice that I am not showing the code for this)
+
+```{r}
+#| echo: false
+#| fig-width: 5
+#| fig-height: 3
+#| fig-align: "center"
+p <- ggplot(cric, aes(x = Team,y = Bowling))
+p + geom_boxplot(fill = "lightblue")+
+  labs(title = "Bowling Average", 
+       subtitle = "Side-by-side boxplot for Teams", 
+       y = "Bowling Average")
+```
+
+Next, we make a scatterplot of the Batting and Bowling average, colored by the Team the player is associated with:
+
+```{r}
+#| fig-width: 7
+#| fig-height: 4
+#| fig-align: "center"
+p <- ggplot(cric, aes(x = Batting, y = Bowling))
+p + geom_point(aes(color = Team, shape = Team))
+```
+
+Additionally, we want to write down, in text, the names of the players with batting average more than 35 and bowling average less than 40. Below is a plot for that.
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4
+#| fig-align: "center"
+
+foo <- subset(cric,  Batting > 35 & Bowling < 40)
+
+p <- ggplot(cric, aes(x = Batting, y = Bowling))
+p + geom_point(aes(color = Team, shape = Team)) + 
+  geom_hline(yintercept = 40, color = "tomato", linetype = "dashed") + 
+  geom_vline(xintercept = 35, color = "tomato", linetype = "dashed") + 
+  geom_text(data = foo, hjust = -.3, 
+             aes(x = Batting, y = Bowling, label = X), size = 3)
+```
+
+### Some more mathematical equations
+
+Let's practice some mathematical typing.
+
+1.  Consider a rotation matrix:
+
+$$
+A = \left(\begin{array}{cc} \cos(\theta) & \sin(\theta) \\ -\sin(\theta) & \cos(\theta) \end{array}  \right)
+$$
+
+Our goal is to find the determinant of the above
+
+```{=tex}
+\begin{align*}
+\text{det}(A) & = \cos(\theta) \cos(\theta) - \sin(\theta) (-\sin(\theta)\\
+ & =\sin^2(\theta) + \cos^2(\theta) \\ 
+ & = 1 .
+\end{align*}
+```
+2.  Consider the series $A = \sum_{i=1}^{n} i$:
+
+    ```{=tex}
+    \begin{align*}
+    2A & = \sum_{i=1}^{n} i + \sum_{i=1}^{n} i\\
+    & = (1 + 2 + \dots + n) +  (1 + 2 + \dots + n)\\
+    & = (1 + n) + (2 + n-1) + \dots (n + 1)\\
+     & = n \cdot (n+1)\\
+    \Rightarrow A & = \frac{n(n+1)}{2}\,.
+    \end{align*}
+    ```
